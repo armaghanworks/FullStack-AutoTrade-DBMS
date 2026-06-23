@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoTrade - Premium Vehicle Marketplace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    
+</head>
+<body>
+    <div class="toast-container" id="toastContainer"></div>
+
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo" onclick="navigateToHome()">
+                    <i class="fas fa-car"></i>
+                    <span>AutoTrade</span>
+                </a>
+                <ul class="nav-links" id="navLinks">
+                    <li><a onclick="navigateToHome()" class="active">Home</a></li>
+                    <li><a onclick="filterByCategory('car')">Cars</a></li>
+                    <li><a onclick="filterByCategory('bike')">Bikes</a></li>
+                    <li><a onclick="showMyPosts()" id="myPostsLink" class="hidden">My Posts</a></li>
+                    <li><a onclick="typeof showInactiveAds!=='undefined'?showInactiveAds():showToast('Load db-api.js','error')" id="inactiveAdsLink" class="hidden" style="color:#f59e0b;">Inactive Ads</a></li>
+                </ul>
+                <div class="auth-section" id="authSection">
+                    <!-- Theme Toggle Button -->
+                    <button class="btn btn-ghost" id="themeToggle" style="font-size: 1.25rem; padding: 0.5rem;">
+                        <i class="fas fa-sun"></i>
+                    </button>
+                    
+                    <button class="btn btn-outline" onclick="showLoginForm()" id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </button>
+                    <button class="btn btn-primary hidden" onclick="showPublishForm()" id="publishBtn">
+                        <i class="fas fa-plus"></i>
+                        Sell Your Vehicle
+                    </button>
+                    <div class="user-profile hidden" id="userProfile">
+                        <div class="user-avatar" id="userAvatar"></div>
+                        <span id="username"></span>
+                        <button class="btn btn-ghost" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <main id="mainContent">
+        <section class="hero" id="heroSection">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Find Your Perfect Vehicle</h1>
+                    <p>Browse thousands of cars and bikes from verified sellers across Pakistan</p>
+                    <div class="search-bar">
+                        <input type="text" id="searchInput" placeholder="Search by brand, model, year, or seller..." onkeypress="handleSearchKeypress(event)" oninput="toggleSearchClearBtn()">
+                        <button id="searchClearBtn" onclick="clearSearchInput()" style="right: 4rem; width: 36px; height: 36px; display: none;" title="Clear">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <button onclick="performSearch()">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="search-bar" style="max-width: 500px; margin: var(--spacing-md) auto 3rem;">
+                        <input type="text" id="locationSearchInput" placeholder="Search vehicles by location" autocomplete="off" oninput="toggleLocationClearBtn()">
+                        <div id="locationSearchSuggestions" style="position: absolute; z-index: 100; width: 100%; background: hsl(var(--surface)); border: 1px solid hsl(var(--border)); border-top: none; border-radius: 0 0 var(--radius-lg) var(--radius-lg); max-height: 200px; overflow-y: auto; display: none; font-size: 0.9375rem;"></div>
+                        <button id="locationClearBtn" onclick="clearLocationInput()" style="right: 4rem; width: 36px; height: 36px; display: none;" title="Clear">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <button onclick="searchVehiclesByLocation()" style="right: 0.5rem;">
+                            <i class="fas fa-location-arrow"></i>
+                        </button>
+                    </div>
+                    <div class="hero-cta">
+                        <button class="btn btn-primary" onclick="filterByCategory('car')">
+                            <i class="fas fa-car"></i>
+                            Browse Cars
+                        </button>
+                        <button class="btn btn-outline" onclick="showPublishFormOrLogin()">
+                            <i class="fas fa-plus-circle"></i>
+                            Sell Your Vehicle
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="category-tabs" id="categoryTabs">
+            <div class="container">
+                <div class="tabs">
+                    <button class="tab active" data-category="all" onclick="filterByCategory('all')">
+                        All Vehicles
+                    </button>
+                    <button class="tab" data-category="car" onclick="filterByCategory('car')">
+                        <i class="fas fa-car"></i> Cars
+                    </button>
+                    <button class="tab" data-category="bike" onclick="filterByCategory('bike')">
+                        <i class="fas fa-motorcycle"></i> Bikes
+                    </button>
+                    
+                    <button class="tab" data-category="nearby" onclick="showNearbyVehicles()">
+                        <i class="fas fa-location-arrow"></i> Nearby Vehicles
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="ads-section" id="adsSection">
+            <div class="container">
+                <div class="section-header">
+                    <h2 id="sectionTitle">Premium Vehicles</h2>
+                </div>
+                <div class="ads-grid" id="adsGrid"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About AutoTrade</h4>
+                    <p>Pakistan's premier marketplace for buying and selling premium vehicles. Connect with verified sellers and find your dream car or bike.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Categories</h4>
+                    <ul>
+                        <li><a href="#" onclick="filterByCategory('car')">Cars</a></li>
+                        <li><a href="#" onclick="filterByCategory('bike')">Bikes</a></li>
+                        <li><a href="#" onclick="filterByCategory('all')">All Vehicles</a></li>
+                        <li><a href="#" onclick="showNearbyVehicles()">Nearby Vehicles</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Help & Support</h4>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AutoTrade. All rights reserved. Built with passion for automotive excellence.</p>
+                <p style="font-size: 0.75rem; margin-top: 1rem; color: hsl(var(--text-muted));">
+                    Location data © <a href="https://www.openstreetmap.org/copyright" target="_blank" style="color: hsl(var(--primary));">OpenStreetMap contributors</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="db-api.js"></script>
+</body>
+</html>
