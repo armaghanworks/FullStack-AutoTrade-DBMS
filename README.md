@@ -1,10 +1,9 @@
-# AutoTrade – DBMS Project Setup Guide
+# AutoTrade – DBMS Project
 ## Bahria University | DBMS LAB Spring-2026
-### Members: Muhammad Roman (046) | Mohammad Armaghan Khan (052) | Muhammad Fahad Khan (054)
 
 ---
 
-## 📁 PROJECT STRUCTURE (Files You Have)
+## 📁 PROJECT STRUCTURE 
 
 ```
 AutoTrade_DBMS/
@@ -193,9 +192,9 @@ const dbConfig = {
 
 ---
 
-## 📝 FOR YOUR DBMS LAB REPORT
+## 📝 PROJECT REPORT
 
-Your project demonstrates:
+ project demonstrates:
 - ✅ **Relational Schema**: 5 normalized tables with PK/FK constraints
 - ✅ **Normalization**: 1NF, 2NF, 3NF applied
 - ✅ **CRUD Operations**: INSERT, SELECT, UPDATE, DELETE
@@ -205,4 +204,3 @@ Your project demonstrates:
 
 ---
 
-*AutoTrade DBMS Project | Bahria University, Islamabad | Spring 2026*
